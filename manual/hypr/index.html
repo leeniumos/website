@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Hypr Config Reference</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header class="top">
+      <h1 class="title">Hypr Config Reference</h1>
+      <p class="subtitle">How Leenium layers Hyprland defaults and user overrides.</p>
+      <nav class="nav">
+        <a href="../">Manual Home</a>
+        <a href="../../">Website Home</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <h2>Load Order (Important)</h2>
+      <p>Your main <code>~/.config/hypr/hyprland.conf</code> first loads defaults from <code>~/.local/share/leenium/default/hypr</code>, then loads user overrides from <code>~/.config/hypr</code>.</p>
+      <pre>Defaults: autostart, media/clipboard/tiling/utilities bindings,
+envs, looknfeel, input, windows, current theme.
+
+Overrides: monitors.conf, input.conf, bindings.conf,
+looknfeel.conf, autostart.conf.</pre>
+      <p>Practical rule: edit files in <code>~/.config/hypr</code>; keep <code>default/hypr</code> as baseline.</p>
+    </section>
+
+    <section class="section">
+      <h2>User Config Tree (`leenium/config/hypr`)</h2>
+      <ul>
+        <li><code>hyprland.conf</code>: source order and entry point.</li>
+        <li><code>monitors.conf</code>: display layout and scaling.</li>
+        <li><code>bindings.conf</code>: personal keybind overrides.</li>
+        <li><code>input.conf</code>: keyboard, touchpad, pointer settings.</li>
+        <li><code>looknfeel.conf</code>: local aesthetic overrides.</li>
+        <li><code>autostart.conf</code>: startup programs and services.</li>
+        <li><code>hypridle.conf</code>, <code>hyprlock.conf</code>, <code>hyprsunset.conf</code>, <code>xdph.conf</code>: lock/idle/nightlight/portal behavior.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Default Config Tree (`leenium/default/hypr`)</h2>
+      <ul>
+        <li><code>looknfeel.conf</code>, <code>input.conf</code>, <code>windows.conf</code>, <code>envs.conf</code>: baseline session behavior.</li>
+        <li><code>autostart.conf</code>: base daemons + <code>leenium-cmd-first-run</code>.</li>
+        <li><code>bindings/</code>:</li>
+        <li><code>media.conf</code>: XF86 volume/brightness/media keys.</li>
+        <li><code>clipboard.conf</code>: universal copy/paste/cut + clipboard manager.</li>
+        <li><code>tiling-v2.conf</code>: modern window/workspace/group controls.</li>
+        <li><code>utilities.conf</code>: menus, notifications, toggles, capture, sharing.</li>
+        <li><code>apps.conf</code> + <code>apps/*.conf</code>: app-specific window rules (browser, terminals, telegram, steam, qemu, etc.).</li>
+        <li><code>plain-bindings.conf</code> and root <code>bindings.conf</code>: compatibility/deprecated binding layers.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Useful Commands While Tweaking</h2>
+      <ul>
+        <li><code>hyprctl reload</code> or <code>leenium-restart-hyprctl</code></li>
+        <li><code>leenium-menu-keybindings --print</code> to inspect live binds</li>
+        <li><code>leenium-reinstall-configs</code> to restore defaults (overwrites local config)</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

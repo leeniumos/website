@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Manual</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header class="top">
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>leenium-manual</strong>
+        <span>chapter index</span>
+      </div>
+      <div class="top-body">
+        <h1 class="title">The Leenium Manual</h1>
+        <p class="subtitle">Operator docs for install flow, runtime behavior, and desktop operations. Built from this repository's scripts and config defaults.</p>
+        <nav class="nav">
+          <a href="../">Website Home</a>
+          <a href="./keybindings/">Hotkeys</a>
+          <a href="./install/">Install</a>
+        </nav>
+      </div>
+    </header>
+
+    <p class="shell-note"><code>$ manual</code> Pick a chapter below. The keybindings chapter is generated from real Hypr config in this repo.</p>
+
+    <main class="grid">
+      <article class="card">
+        <h2>01. Install Manual</h2>
+        <p>Preflight requirements, install stages, and logs used by the installer pipeline.</p>
+        <a class="button" href="./install/">Open chapter</a>
+      </article>
+
+      <article class="card">
+        <h2>02. Post-Install Guide</h2>
+        <p>First-run automation, immediate follow-up commands, and optional setup tasks.</p>
+        <a class="button" href="./post-install/">Open chapter</a>
+      </article>
+
+      <article class="card">
+        <h2>03. Troubleshooting</h2>
+        <p>Failure recovery commands and log collection paths for support and debugging.</p>
+        <a class="button" href="./troubleshooting/">Open chapter</a>
+      </article>
+
+      <article class="card">
+        <h2>04. Keybindings</h2>
+        <p>Complete parsed keymap from Leenium defaults and shipped app-binding overrides.</p>
+        <a class="button" href="./keybindings/">Open chapter</a>
+      </article>
+
+      <article class="card">
+        <h2>05. Hypr Config Reference</h2>
+        <p>Config layering and source order across defaults, themes, and user overrides.</p>
+        <a class="button" href="./hypr/">Open chapter</a>
+      </article>
+    </main>
+
+    <p class="footer">Sources: `leenium/config/hypr`, `leenium/default/hypr/bindings/*.conf`, `leenium/install`, and `leenium/bin`.</p>
+  </div>
+</body>
+</html>

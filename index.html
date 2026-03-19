@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Terminal</title>
+  <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+  <style>
+    :root {
+      --bg: #060b0f;
+      --panel: #0b1319;
+      --line: #1d313d;
+      --text: #d8f7ea;
+      --muted: #8cb7a9;
+      --ok: #5cf0ad;
+      --warn: #ffd479;
+      --accent: #35d6a0;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .terminal {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      color: var(--muted);
+      background: #0a1116;
+    }
+
+    .dots { display: flex; gap: 7px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.r { background: #ff5f56; }
+    .dot.y { background: #ffbd2e; }
+    .dot.g { background: #27c93f; }
+
+    .body { padding: 14px; }
+
+    .logo-wrap {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #081016;
+      overflow-x: auto;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    pre.logo {
+      display: inline-block;
+      margin: 0;
+      color: #93ffd1;
+      font-size: clamp(8px, 1.15vw, 12px);
+      line-height: 1.3;
+      white-space: pre;
+    }
+
+    .line {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 4px 0;
+      font-size: 14px;
+    }
+
+    .prompt { color: var(--ok); }
+    .path { color: var(--muted); }
+    .muted { color: var(--muted); }
+
+    .cmdbar {
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #0a1218;
+    }
+
+    .cmdbar input {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: #10202a;
+      color: var(--text);
+      padding: 7px 10px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+    }
+
+    .tab:hover,
+    .tab:focus-visible {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .tab.active {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px rgba(53, 214, 160, 0.24);
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #0a1117;
+      padding: 12px;
+      min-height: 240px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .panel.active { display: block; }
+
+    ul { margin: 0; padding-left: 18px; }
+    li { margin: 6px 0; }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.9fr);
+      gap: 14px;
+      margin-top: 10px;
+      align-items: start;
+    }
+
+    .download-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: linear-gradient(180deg, #0d1820 0%, #0a1117 100%);
+      padding: 14px;
+    }
+
+    .download-card.primary {
+      background:
+        radial-gradient(circle at top right, rgba(53, 214, 160, 0.14), transparent 42%),
+        linear-gradient(180deg, #0e1820 0%, #0a1117 100%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .download-card h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .download-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .download-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .download-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      background: rgba(53, 214, 160, 0.12);
+      color: var(--text);
+      padding: 10px 14px;
+      font-weight: 700;
+    }
+
+    .download-button:hover,
+    .download-button:focus-visible {
+      text-decoration: none;
+      background: rgba(53, 214, 160, 0.18);
+    }
+
+    .download-meta {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .hash-label {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .hash-block {
+      display: block;
+      width: 100%;
+      overflow-wrap: anywhere;
+      line-height: 1.6;
+      padding: 10px 12px;
+    }
+
+    .verify-copy {
+      margin-top: 12px;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    a { color: #94f1cd; text-decoration: none; }
+    a:hover, a:focus-visible { text-decoration: underline; outline: none; }
+
+    code {
+      color: var(--warn);
+      background: #10202a;
+      border: 1px solid #1d3545;
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+
+    @media (max-width: 760px) {
+      body { padding: 8px; }
+      .body { padding: 10px; }
+      .download-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="terminal" role="application" aria-label="Leenium terminal website">
+    <header class="topbar">
+      <div class="dots" aria-hidden="true">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      </div>
+      <strong>leenium-terminal</strong>
+      <span>by DrunkLeen</span>
+    </header>
+
+    <div class="body">
+      <div class="logo-wrap" aria-label="Leenium logo">
+<pre class="logo">                                                                 ▄▄▄
+ ▄█        ▄██████▄   ▄██████▄  ▄█    █▄    ▄█   ▄█   █▄    ▄███████████▄ 
+███       ███        ███       ████   ███  ███  ███   ███  ███   ███   ███
+███       ███        ███       █████  ███  ███  ███   ███  ███   ███   ███
+███      ▄███▄▄▄▄   ▄███▄▄▄▄   ██████ ███  ███  ███   ███  ███   ███   ███
+███      ▀███▀▀▀▀   ▀███▀▀▀▀   ███ ██████  ███  ███   ███  ███   ███   ███
+███       ███        ███       ███  █████  ███  ███   ███  ███   ███   ███
+███       ███        ███       ███   ████  ███  ███   ███  ███   ███   ███
+ ▀██████▀  ▀██████▀   ▀██████▀  ▀█    █▀   █▀    ▀█████▀    ▀█   ███   █▀ 
+</pre>
+      </div>
+
+      <div class="line"><span class="prompt">user@leenium</span><span class="path">:~/website$</span><span>help</span></div>
+      <div class="line muted">Commands: home repos download about manual keybindings hypr help</div>
+
+      <label class="cmdbar" for="commandInput">
+        <span class="prompt">&gt;</span>
+        <input id="commandInput" type="text" autocomplete="off" spellcheck="false" placeholder="type command (e.g. manual/install)" />
+      </label>
+
+      <nav class="tabs" aria-label="sections">
+        <button class="tab" data-target="home">home</button>
+        <button class="tab" data-target="repos">repos</button>
+        <button class="tab" data-target="download">download</button>
+        <button class="tab" data-target="about">about</button>
+        <button class="tab" data-target="manual">manual</button>
+        <button class="tab" data-target="keybindings">keybindings</button>
+        <button class="tab" data-target="hypr">hypr</button>
+      </nav>
+
+      <section id="home" class="panel active">
+        <div class="line"><span class="prompt">$</span> home</div>
+        <p>Leenium is the post-<code>archinstall</code> system layer for a curated Arch + Hyprland setup.</p>
+        <br>
+        <div class="line"><span class="prompt">$</span> pipeline</div>
+        <p><code>preflight -> packaging -> config -> login -> post-install</code></p>
+      </section>
+
+      <section id="repos" class="panel">
+        <div class="line"><span class="prompt">$</span> repos</div>
+        <ul>
+          <li><a href="https://github.com/leeniumos/leenium" target="_blank" rel="noopener noreferrer">github.com/leeniumos/leenium</a> - installer payload</li>
+          <li><a href="https://github.com/leeniumos/iso" target="_blank" rel="noopener noreferrer">github.com/leeniumos/iso</a> - ISO builder</li>
+          <li><a href="https://github.com/leeniumos/leenium/wiki" target="_blank" rel="noopener noreferrer">github.com/leeniumos/leenium/wiki</a> - docs/wiki</li>
+          <li><a href="https://github.com/leeniumos" target="_blank" rel="noopener noreferrer">github.com/leeniumos</a> - organization</li>
+        </ul>
+      </section>
+
+      <section id="download" class="panel">
+        <div class="line"><span class="prompt">$</span> download</div>
+        <div class="download-grid">
+          <article class="download-card primary">
+            <div class="eyebrow">Latest Build</div>
+            <h3>Download the current x86_64 ISO</h3>
+            <p>Leenium is currently published as a single x86_64 image. Download it from GitHub, then verify the checksum before writing it to USB media.</p>
+            <div class="download-actions">
+              <a class="download-button" href="https://github.com/leeniumos/iso/releases" target="_blank" rel="noopener noreferrer">Open GitHub Releases</a>
+            </div>
+            <div class="download-meta">This site is the landing page. Release artifacts live on <code>github.com/leeniumos/iso/releases</code>.</div>
+          </article>
+
+          <article class="download-card">
+            <div class="eyebrow">Verification</div>
+            <p class="hash-label">SHA256</p>
+            <code class="hash-block">Paste the current x86_64 ISO SHA256 here.</code>
+            <p class="verify-copy">After downloading, compare it with <code>sha256sum leenium-*.iso</code> before booting the installer.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="about" class="panel">
+        <div class="line"><span class="prompt">$</span> about</div>
+        <ul>
+          <li>scripted install and hardware compatibility fixes</li>
+          <li>hyprland-centered keyboard-first desktop defaults</li>
+          <li>operational command surface with <code>leenium-*</code> tools</li>
+          <li>theme and config layering (defaults + user overrides)</li>
+        </ul>
+      </section>
+
+      <section id="manual" class="panel">
+        <div class="line"><span class="prompt">$</span> manual</div>
+        <ul>
+          <li><a href="manual/install/">Install Manual</a></li>
+          <li><a href="manual/post-install/">Post-Install Guide</a></li>
+          <li><a href="manual/troubleshooting/">Troubleshooting</a></li>
+          <li><a href="manual/keybindings/">Keybindings</a></li>
+          <li><a href="manual/hypr/">Hypr Config Reference</a></li>
+          <li><a href="manual/">Manual Home</a></li>
+        </ul>
+      </section>
+
+      <section id="keybindings" class="panel">
+        <div class="line"><span class="prompt">$</span> keybindings</div>
+        <p>Complete parsed keymap is available in the manual chapter below.</p>
+        <ul>
+          <li><a href="manual/keybindings/">Open Generated Keybindings Manual</a></li>
+          <li>Includes applications, media, tiling, utilities, and legacy compatibility binds.</li>
+          <li>Source files: <code>leenium/config/hypr/bindings.conf</code> + <code>leenium/default/hypr/bindings/*.conf</code></li>
+        </ul>
+      </section>
+
+      <section id="hypr" class="panel">
+        <div class="line"><span class="prompt">$</span> hypr</div>
+        <ul>
+          <li><code>~/.local/share/leenium/default/hypr</code> (base defaults)</li>
+          <li><code>~/.config/leenium/current/theme/hyprland.conf</code> (theme layer)</li>
+          <li><code>~/.config/hypr/*.conf</code> (user overrides)</li>
+          <li>Reference: <a href="manual/hypr/">manual/hypr</a></li>
+        </ul>
+      </section>
+
+      <div class="status" id="statusLine">Tip: keys 1-7 switch sections.</div>
+    </div>
+  </main>
+
+  <script>
+    const tabs = [...document.querySelectorAll('.tab')];
+    const panels = [...document.querySelectorAll('.panel')];
+    const commandInput = document.getElementById('commandInput');
+    const statusLine = document.getElementById('statusLine');
+    const map = ['home', 'repos', 'download', 'about', 'manual', 'keybindings', 'hypr'];
+
+    const aliases = {
+      repo: 'repos',
+      repositories: 'repos',
+      docs: 'manual',
+      kb: 'keybindings',
+      keybind: 'keybindings',
+      keybinds: 'keybindings',
+      iso: 'download',
+      'download iso': 'download',
+      hyprland: 'hypr',
+      start: 'home'
+    };
+
+    const manualRoutes = {
+      install: 'manual/install/',
+      'post-install': 'manual/post-install/',
+      postinstall: 'manual/post-install/',
+      troubleshooting: 'manual/troubleshooting/',
+      'manual/install': 'manual/install/',
+      'manual/post-install': 'manual/post-install/',
+      'manual/postinstall': 'manual/post-install/',
+      'manual/troubleshooting': 'manual/troubleshooting/',
+      'manual/keybindings': 'manual/keybindings/',
+      'manual/hypr': 'manual/hypr/'
+    };
+
+    function showPanel(id) {
+      if (!map.includes(id)) return;
+      panels.forEach(panel => panel.classList.toggle('active', panel.id === id));
+      tabs.forEach(tab => tab.classList.toggle('active', tab.dataset.target === id));
+      statusLine.textContent = `Active: ${id}`;
+      window.location.hash = id;
+    }
+
+    function runCommand(raw) {
+      const value = raw.trim().toLowerCase();
+      const normalized = value
+        .replace(/\s+/g, ' ')
+        .replace(/^manual\s+/, 'manual/')
+        .replace(/\s*\/\s*/g, '/');
+
+      if (!value) return;
+      if (value === 'help') {
+        statusLine.textContent = 'home repos download about manual keybindings hypr manual/install manual/post-install manual/troubleshooting';
+        return;
+      }
+
+      if (manualRoutes[value] || manualRoutes[normalized]) {
+        window.location.href = manualRoutes[value] || manualRoutes[normalized];
+        return;
+      }
+
+      const resolved = aliases[value] || aliases[normalized] || normalized;
+      if (map.includes(resolved)) {
+        showPanel(resolved);
+        return;
+      }
+
+      statusLine.textContent = `Unknown command: ${value}`;
+    }
+
+    tabs.forEach(tab => tab.addEventListener('click', () => showPanel(tab.dataset.target)));
+
+    commandInput.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      runCommand(commandInput.value);
+      commandInput.value = '';
+    });
+
+    window.addEventListener('keydown', (event) => {
+      const idx = Number(event.key) - 1;
+      if (idx >= 0 && idx < map.length) showPanel(map[idx]);
+    });
+
+    window.addEventListener('hashchange', () => {
+      const id = window.location.hash.replace(/^#/, '').trim();
+      if (map.includes(id)) showPanel(id);
+    });
+
+    const initial = window.location.hash.replace(/^#/, '').trim();
+    showPanel(map.includes(initial) ? initial : 'home');
+  </script>
+</body>
+</html>

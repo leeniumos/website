@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Install Manual</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header class="top">
+      <h1 class="title">Install Manual</h1>
+      <p class="subtitle">How the Leenium installer runs and what it expects.</p>
+      <nav class="nav">
+        <a href="../">Manual Home</a>
+        <a href="../../">Website Home</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <h2>Scope</h2>
+      <p>Leenium is the post-<code>archinstall</code> system layer. The main entrypoint is <code>install.sh</code>, designed to run from <code>~/.local/share/leenium</code> in the ISO/install workflow.</p>
+    </section>
+
+    <section class="section">
+      <h2>Requirements Enforced in Preflight</h2>
+      <ul>
+        <li>Vanilla Arch Linux (not CachyOS, EndeavourOS, Garuda, Manjaro).</li>
+        <li>Run as normal user, not root.</li>
+        <li><code>x86_64</code> architecture.</li>
+        <li>Secure Boot disabled.</li>
+        <li>No preinstalled GNOME/KDE desktop stack.</li>
+        <li><code>limine</code> bootloader is present.</li>
+        <li>Root filesystem is <code>btrfs</code>.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Install Stages</h2>
+      <ol>
+        <li><code>preflight</code>: guard checks, log setup, migration run, first-run mode marker, mkinitcpio hook deferral.</li>
+        <li><code>packaging</code>: base, fonts, neovim, icons, webapps, TUIs, and hardware package sets.</li>
+        <li><code>config</code>: copy defaults, theme setup, shell and app config, hardware fixes.</li>
+        <li><code>login</code>: Plymouth, SDDM, Limine/Snapper/mkinitcpio integration.</li>
+        <li><code>post-install</code>: hibernation setup, pacman cleanup, reboot permission, final screen.</li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>Logs and Success Markers</h2>
+      <ul>
+        <li>Installer log: <code>/var/log/leenium-install.log</code></li>
+        <li>Base install log: <code>/var/log/archinstall/install.log</code></li>
+        <li>Completion marker in chroot mode: <code>/var/tmp/leenium-install-completed</code></li>
+      </ul>
+      <p>Every stage script is executed through logged wrappers, so failed scripts are timestamped in the install log.</p>
+    </section>
+  </div>
+</body>
+</html>

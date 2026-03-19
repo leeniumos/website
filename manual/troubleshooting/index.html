@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Troubleshooting</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header class="top">
+      <h1 class="title">Troubleshooting</h1>
+      <p class="subtitle">Common failures and direct recovery paths from Leenium tooling.</p>
+      <nav class="nav">
+        <a href="../">Manual Home</a>
+        <a href="../../">Website Home</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <h2>Install Failures</h2>
+      <p>Check logs first:</p>
+      <pre>/var/log/archinstall/install.log
+/var/log/leenium-install.log</pre>
+      <p>If needed, share logs with:</p>
+      <pre>leenium-upload-log install</pre>
+    </section>
+
+    <section class="section">
+      <h2>First-Run Did Not Complete</h2>
+      <p>If first boot tasks did not run, manually invoke:</p>
+      <pre>leenium-cmd-first-run</pre>
+      <p>Verify marker file state:</p>
+      <pre>~/.local/state/leenium/first-run.mode</pre>
+    </section>
+
+    <section class="section">
+      <h2>UI Component Issues</h2>
+      <ul>
+        <li>Reload Hyprland config: <code>leenium-restart-hyprctl</code></li>
+        <li>Restart Waybar: <code>leenium-restart-waybar</code></li>
+        <li>Restart Walker: <code>leenium-restart-walker</code></li>
+        <li>Restart notifications: <code>leenium-restart-mako</code></li>
+        <li>Re-copy defaults: <code>leenium-reinstall-configs</code></li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Update Problems</h2>
+      <ul>
+        <li>Standard update: <code>leenium-update</code></li>
+        <li>Analyze update log for initramfs warning: <code>leenium-update-analyze-logs</code></li>
+        <li>Force reinstall baseline: <code>leenium-reinstall</code></li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Collect Debug Information</h2>
+      <ul>
+        <li>Interactive debug report: <code>leenium-debug</code></li>
+        <li>Print-only debug report: <code>leenium-debug --print</code></li>
+        <li>Boot log upload: <code>leenium-upload-log this-boot</code> or <code>leenium-upload-log last-boot</code></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

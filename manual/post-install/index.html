@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leenium Post-Install Guide</title>
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <header class="top">
+      <h1 class="title">Post-Install Guide</h1>
+      <p class="subtitle">What happens on first boot and what to do next.</p>
+      <nav class="nav">
+        <a href="../">Manual Home</a>
+        <a href="../../">Website Home</a>
+      </nav>
+    </header>
+
+    <section class="section">
+      <h2>Automatic First-Run Tasks</h2>
+      <p>On login, Hyprland autostart launches <code>leenium-cmd-first-run</code> once when <code>~/.local/state/leenium/first-run.mode</code> exists.</p>
+      <ul>
+        <li>Power profile and battery monitor timer setup.</li>
+        <li>UFW default policy + Docker integration + enable service.</li>
+        <li><code>/etc/resolv.conf</code> symlink to systemd-resolved stub resolver.</li>
+        <li>GNOME interface defaults and icon cache refresh.</li>
+        <li>Elephant user service enable/start.</li>
+        <li>Cleanup of temporary installer sudoers files.</li>
+        <li>Critical notifications for keybindings and update/Wi-Fi.</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <h2>Recommended Immediate Actions</h2>
+      <ol>
+        <li>Connect networking if needed: <code>leenium-launch-wifi</code></li>
+        <li>Run system update: <code>leenium-update</code></li>
+        <li>Open keybindings cheatsheet: <code>Super + K</code></li>
+        <li>Check theme/font state: <code>leenium-theme-list</code>, <code>leenium-font-list</code></li>
+      </ol>
+    </section>
+
+    <section class="section">
+      <h2>Optional Setup Commands</h2>
+      <ul>
+        <li><code>leenium-setup-fingerprint</code></li>
+        <li><code>leenium-setup-fido2</code></li>
+        <li><code>leenium-install-dev-env</code></li>
+        <li><code>leenium-install-terminal</code> / <code>leenium-install-vscode</code></li>
+        <li><code>leenium-install-docker-dbs</code></li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

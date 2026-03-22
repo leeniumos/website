@@ -13,58 +13,92 @@
 <body>
   <div class="wrapper">
     <header class="top">
-      <h1 class="title">Troubleshooting</h1>
-      <p class="subtitle">Common failures and direct recovery paths from Leenium tooling.</p>
-      <nav class="nav">
-        <a href="../">Manual Home</a>
-        <a href="../../">Website Home</a>
-      </nav>
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>troubleshooting</strong>
+        <span>logs and recovery</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">Recovery</span>
+        <h1 class="title">Leenium <span class="title-accent">Troubleshooting</span></h1>
+        <p class="subtitle">When something breaks, start with the shortest signal path: logs first, smallest safe recovery command second, broad resets last.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">Website Home</a>
+          <a href="../install/">Install</a>
+        </nav>
+      </div>
     </header>
 
     <section class="section">
       <h2>Install Failures</h2>
-      <p>Check logs first:</p>
+      <p>Always start here for install issues:</p>
       <pre>/var/log/archinstall/install.log
 /var/log/leenium-install.log</pre>
-      <p>If needed, share logs with:</p>
+      <p>If you need to share the failure:</p>
       <pre>leenium-upload-log install</pre>
     </section>
 
     <section class="section">
-      <h2>First-Run Did Not Complete</h2>
-      <p>If first boot tasks did not run, manually invoke:</p>
+      <h2>First-Run Problems</h2>
+      <p>If the system boots but first-login automation did not complete, try:</p>
       <pre>leenium-cmd-first-run</pre>
-      <p>Verify marker file state:</p>
+      <p>Then verify the first-run marker state:</p>
       <pre>~/.local/state/leenium/first-run.mode</pre>
     </section>
 
     <section class="section">
-      <h2>UI Component Issues</h2>
-      <ul>
-        <li>Reload Hyprland config: <code>leenium-restart-hyprctl</code></li>
-        <li>Restart Waybar: <code>leenium-restart-waybar</code></li>
-        <li>Restart Walker: <code>leenium-restart-walker</code></li>
-        <li>Restart notifications: <code>leenium-restart-mako</code></li>
-        <li>Re-copy defaults: <code>leenium-reinstall-configs</code></li>
-      </ul>
+      <h2>UI Component Recovery</h2>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>Restart services</h3>
+          <ul>
+            <li><code>leenium-restart-waybar</code></li>
+            <li><code>leenium-restart-walker</code></li>
+            <li><code>leenium-restart-mako</code></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Reapply config</h3>
+          <ul>
+            <li><code>leenium-reinstall-configs</code></li>
+          </ul>
+        </div>
+      </div>
+      <div class="callout warn">
+        <p><code>leenium-reinstall-configs</code> is a stronger reset tool than the service restarts above. Use it when config drift is the likely cause, not as the first response to every UI problem.</p>
+      </div>
     </section>
 
     <section class="section">
-      <h2>Update Problems</h2>
+      <h2>Update Recovery</h2>
       <ul>
-        <li>Standard update: <code>leenium-update</code></li>
-        <li>Analyze update log for initramfs warning: <code>leenium-update-analyze-logs</code></li>
-        <li>Force reinstall baseline: <code>leenium-reinstall</code></li>
+        <li><code>leenium-update</code> for the normal update path</li>
+        <li><code>leenium-update-analyze-logs</code> when update logs mention initramfs or related warnings</li>
+        <li><code>leenium-reinstall</code> when the baseline package state needs to be forced back into line</li>
       </ul>
     </section>
 
     <section class="section">
       <h2>Collect Debug Information</h2>
       <ul>
-        <li>Interactive debug report: <code>leenium-debug</code></li>
-        <li>Print-only debug report: <code>leenium-debug --print</code></li>
-        <li>Boot log upload: <code>leenium-upload-log this-boot</code> or <code>leenium-upload-log last-boot</code></li>
+        <li><code>leenium-debug</code></li>
+        <li><code>leenium-debug --print</code></li>
+        <li><code>leenium-upload-log this-boot</code></li>
+        <li><code>leenium-upload-log last-boot</code></li>
       </ul>
+    </section>
+
+    <section class="section">
+      <h2>Recovery Order That Usually Works</h2>
+      <ol>
+        <li>read the relevant logs</li>
+        <li>run the smallest targeted recovery command</li>
+        <li>collect debug output before broader resets</li>
+        <li>only then use reinstall-style commands</li>
+      </ol>
     </section>
   </div>
 </body>

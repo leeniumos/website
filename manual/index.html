@@ -18,54 +18,90 @@
           <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
         </div>
         <strong>leenium-manual</strong>
-        <span>chapter index</span>
+        <span>operator docs</span>
       </div>
       <div class="top-body">
-        <h1 class="title">The Leenium Manual</h1>
-        <p class="subtitle">Operator docs for install flow, runtime behavior, and desktop operations. Built from this repository's scripts and config defaults.</p>
+        <span class="eyebrow">Manual Index</span>
+        <h1 class="title">The <span class="title-accent">Leenium</span> Manual</h1>
+        <p class="subtitle">A cleaner map of installation, first boot, recovery, keybindings, and Hyprland behavior. This is the fast path for operators, testers, and maintainers who need answers without digging through the whole codebase.</p>
         <nav class="nav">
           <a href="../">Website Home</a>
-          <a href="./keybindings/">Hotkeys</a>
           <a href="./install/">Install</a>
+          <a href="./post-install/">First Boot</a>
+          <a href="./keybindings/">Keybindings</a>
         </nav>
       </div>
     </header>
 
-    <p class="shell-note"><code>$ manual</code> Pick a chapter below. The keybindings chapter is generated from real Hypr config in this repo.</p>
+    <p class="shell-note"><code>$ manual</code> Start with the chapter that matches the stage you are in: install, first boot, recovery, keybindings, or config layout.</p>
+
+    <section class="hero-grid">
+      <article class="mini-card">
+        <h3>📦 Install</h3>
+        <p>Requirements, stage order, logs, and the assumptions the installer enforces before it touches the system.</p>
+      </article>
+      <article class="mini-card">
+        <h3>🚀 First Boot</h3>
+        <p>What Leenium runs automatically after install and which commands matter immediately after login.</p>
+      </article>
+      <article class="mini-card">
+        <h3>🩺 Recovery</h3>
+        <p>Direct commands for UI restarts, debug collection, and update or first-run repair.</p>
+      </article>
+      <article class="mini-card">
+        <h3>⌨️ Workflow</h3>
+        <p>Generated keybindings and Hyprland layering so customization does not turn into config drift.</p>
+      </article>
+    </section>
 
     <main class="grid">
       <article class="card">
         <h2>01. Install Manual</h2>
-        <p>Preflight requirements, install stages, and logs used by the installer pipeline.</p>
-        <a class="button" href="./install/">Open chapter</a>
+        <p>Read this before testing an installer change or diagnosing an install failure.</p>
+        <a class="button primary" href="./install/">Open chapter</a>
       </article>
 
       <article class="card">
         <h2>02. Post-Install Guide</h2>
-        <p>First-run automation, immediate follow-up commands, and optional setup tasks.</p>
-        <a class="button" href="./post-install/">Open chapter</a>
+        <p>Read this after the first login or when first-run automation did not behave as expected.</p>
+        <a class="button primary" href="./post-install/">Open chapter</a>
       </article>
 
       <article class="card">
         <h2>03. Troubleshooting</h2>
-        <p>Failure recovery commands and log collection paths for support and debugging.</p>
-        <a class="button" href="./troubleshooting/">Open chapter</a>
+        <p>Use this when something is already broken and you want the shortest route to logs and recovery commands.</p>
+        <a class="button primary" href="./troubleshooting/">Open chapter</a>
       </article>
 
       <article class="card">
         <h2>04. Keybindings</h2>
-        <p>Complete parsed keymap from Leenium defaults and shipped app-binding overrides.</p>
-        <a class="button" href="./keybindings/">Open chapter</a>
+        <p>Generated from the shipped Hyprland binding files so the manual stays tied to real config.</p>
+        <a class="button primary" href="./keybindings/">Open chapter</a>
       </article>
 
       <article class="card">
         <h2>05. Hypr Config Reference</h2>
-        <p>Config layering and source order across defaults, themes, and user overrides.</p>
-        <a class="button" href="./hypr/">Open chapter</a>
+        <p>Understand where defaults live, where overrides belong, and what gets reset by Leenium helper commands.</p>
+        <a class="button primary" href="./hypr/">Open chapter</a>
       </article>
     </main>
 
-    <p class="footer">Sources: `leenium/config/hypr`, `leenium/default/hypr/bindings/*.conf`, `leenium/install`, and `leenium/bin`.</p>
+    <section class="section">
+      <div class="section-intro">
+        <div>
+          <h2>How To Use This Manual</h2>
+          <p>This manual is designed to answer operational questions quickly. It is not a full architecture doc and it is not a replacement for the source repos. Use it when you need the shortest clear explanation of how Leenium behaves at runtime.</p>
+        </div>
+      </div>
+      <div class="pill-row">
+        <span class="pill">install flow</span>
+        <span class="pill">first boot</span>
+        <span class="pill">recovery paths</span>
+        <span class="pill">generated hotkeys</span>
+        <span class="pill">Hyprland layering</span>
+      </div>
+      <p class="footer">Sources: installer scripts under the Leenium repo, shipped Hyprland defaults, generated keybinding output, and the recovery commands exposed by Leenium tooling.</p>
+    </section>
   </div>
 </body>
 </html>

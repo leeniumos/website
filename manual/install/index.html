@@ -13,51 +13,107 @@
 <body>
   <div class="wrapper">
     <header class="top">
-      <h1 class="title">Install Manual</h1>
-      <p class="subtitle">How the Leenium installer runs and what it expects.</p>
-      <nav class="nav">
-        <a href="../">Manual Home</a>
-        <a href="../../">Website Home</a>
-      </nav>
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>install-manual</strong>
+        <span>pipeline overview</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">Install</span>
+        <h1 class="title">Leenium <span class="title-accent">Install Manual</span></h1>
+        <p class="subtitle">This chapter explains what the installer expects, how it is staged, and where to look when something goes wrong. Think of it as the shortest reliable map of the Leenium install pipeline.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">Website Home</a>
+          <a href="../troubleshooting/">Troubleshooting</a>
+        </nav>
+      </div>
     </header>
 
-    <section class="section">
-      <h2>Scope</h2>
-      <p>Leenium is the post-<code>archinstall</code> system layer. The main entrypoint is <code>install.sh</code>, designed to run from <code>~/.local/share/leenium</code> in the ISO/install workflow.</p>
+    <section class="stats">
+      <div class="stat">
+        <strong>5</strong>
+        install stages
+      </div>
+      <div class="stat">
+        <strong>2</strong>
+        primary log files
+      </div>
+      <div class="stat">
+        <strong>1</strong>
+        completion marker
+      </div>
     </section>
 
     <section class="section">
-      <h2>Requirements Enforced in Preflight</h2>
-      <ul>
-        <li>Vanilla Arch Linux (not CachyOS, EndeavourOS, Garuda, Manjaro).</li>
-        <li>Run as normal user, not root.</li>
-        <li><code>x86_64</code> architecture.</li>
-        <li>Secure Boot disabled.</li>
-        <li>No preinstalled GNOME/KDE desktop stack.</li>
-        <li><code>limine</code> bootloader is present.</li>
-        <li>Root filesystem is <code>btrfs</code>.</li>
-      </ul>
+      <div class="section-intro">
+        <div>
+          <h2>Scope</h2>
+          <p>Leenium is the post-<code>archinstall</code> system layer. The main entrypoint is <code>install.sh</code>, designed to run from <code>~/.local/share/leenium</code> in the ISO install flow.</p>
+        </div>
+      </div>
+      <div class="callout">
+        <p>This page describes the expected install behavior. If the code and this page ever disagree, the docs should be treated as stale and updated immediately.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Preflight Requirements</h2>
+      <p>The installer assumes all of the following before continuing:</p>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>System assumptions</h3>
+          <ul>
+            <li>Vanilla Arch Linux</li>
+            <li><code>x86_64</code> architecture</li>
+            <li><code>btrfs</code> root filesystem</li>
+            <li><code>limine</code> bootloader present</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Safety assumptions</h3>
+          <ul>
+            <li>Run as a normal user, not root</li>
+            <li>Secure Boot disabled</li>
+            <li>No preinstalled GNOME or KDE stack</li>
+            <li>No derivative distro state like Manjaro or Garuda</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="section">
       <h2>Install Stages</h2>
       <ol>
-        <li><code>preflight</code>: guard checks, log setup, migration run, first-run mode marker, mkinitcpio hook deferral.</li>
-        <li><code>packaging</code>: base, fonts, neovim, icons, webapps, TUIs, and hardware package sets.</li>
-        <li><code>config</code>: copy defaults, theme setup, shell and app config, hardware fixes.</li>
-        <li><code>login</code>: Plymouth, SDDM, Limine/Snapper/mkinitcpio integration.</li>
-        <li><code>post-install</code>: hibernation setup, pacman cleanup, reboot permission, final screen.</li>
+        <li><code>preflight</code>: guard checks, logging, migrations, first-run marker prep, and mkinitcpio hook deferral</li>
+        <li><code>packaging</code>: base packages, fonts, Neovim, icons, webapps, TUIs, and hardware-specific package sets</li>
+        <li><code>config</code>: copy defaults, apply theme setup, deploy app and shell config, and run hardware fixes</li>
+        <li><code>login</code>: Plymouth, SDDM, Limine, Snapper, and mkinitcpio integration</li>
+        <li><code>post-install</code>: hibernation setup, pacman cleanup, reboot permissions, and final completion state</li>
       </ol>
     </section>
 
     <section class="section">
-      <h2>Logs and Success Markers</h2>
+      <h2>Logs and Completion Markers</h2>
+      <p>The first response to an install issue should be log review, not trial-and-error changes.</p>
+      <pre>/var/log/leenium-install.log
+/var/log/archinstall/install.log
+/var/tmp/leenium-install-completed</pre>
+      <div class="callout warn">
+        <p>Every stage script is run through logging wrappers. If a stage fails, the install log should show the failed script with useful timestamps. Start there.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Fast Triage</h2>
       <ul>
-        <li>Installer log: <code>/var/log/leenium-install.log</code></li>
-        <li>Base install log: <code>/var/log/archinstall/install.log</code></li>
-        <li>Completion marker in chroot mode: <code>/var/tmp/leenium-install-completed</code></li>
+        <li>If install never starts, check preflight assumptions first.</li>
+        <li>If packages fail, inspect <code>/var/log/archinstall/install.log</code>.</li>
+        <li>If Leenium-specific config fails, inspect <code>/var/log/leenium-install.log</code>.</li>
+        <li>If the install finished but first login feels wrong, continue with the <a href="../post-install/">Post-Install Guide</a>.</li>
       </ul>
-      <p>Every stage script is executed through logged wrappers, so failed scripts are timestamped in the install log.</p>
     </section>
   </div>
 </body>

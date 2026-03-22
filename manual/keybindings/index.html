@@ -17,12 +17,13 @@
         <div class="dots" aria-hidden="true">
           <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
         </div>
-        <strong>leenium-keybindings</strong>
-        <span>generated keymap</span>
+        <strong>keybindings</strong>
+        <span>generated reference</span>
       </div>
       <div class="top-body">
-        <h1 class="title">Leenium Keybindings</h1>
-        <p class="subtitle">Parsed from Leenium Hyprland binding files, then rendered as a searchable reference.</p>
+        <span class="eyebrow">Generated Docs</span>
+        <h1 class="title">Leenium <span class="title-accent">Keybindings</span></h1>
+        <p class="subtitle">This page is generated from real shipped Hyprland binding files. Use it as the searchable reference for what Leenium actually binds, not what someone remembers it binding.</p>
         <nav class="nav">
           <a href="../">Manual Home</a>
           <a href="../../">Website Home</a>
@@ -32,22 +33,24 @@
     </header>
 
     <section class="section">
-      <h2>How This Is Built</h2>
+      <h2>How This Page Is Built</h2>
       <ul>
-        <li>Application hotkeys from <code>leenium/config/hypr/bindings.conf</code>.</li>
-        <li>Default system hotkeys from <code>leenium/default/hypr/bindings/*.conf</code>.</li>
-        <li>Legacy profile compatibility from <code>plain-bindings.conf</code> and deprecated <code>bindings.conf</code>.</li>
-        <li>Regenerate this page with <code>./scripts/generate-keybindings.sh</code> from the <code>website/</code> directory.</li>
+        <li>Application hotkeys come from <code>leenium/config/hypr/bindings.conf</code>.</li>
+        <li>System defaults come from <code>leenium/default/hypr/bindings/*.conf</code>.</li>
+        <li>Output is regenerated from <code>website/scripts/generate-keybindings.sh</code>.</li>
       </ul>
-      <p class="footer">Generated from Leenium bindings on 2026-03-19 11:53:26Z</p>
+      <p class="footer">Generated from Leenium bindings on 2026-03-19 11:53:26Z.</p>
     </section>
 
     <section class="section" id="all-keybindings">
-      <h2>All Parsed Keybindings</h2>
+      <h2>Search The Full Table</h2>
       <label class="searchbar" for="filterKeybinds">
         <span>$ grep</span>
-        <input id="filterKeybinds" type="text" autocomplete="off" spellcheck="false" placeholder="filter by shortcut/action/type" />
+        <input id="filterKeybinds" type="text" autocomplete="off" spellcheck="false" placeholder="filter by shortcut, action, or bind type" />
       </label>
+      <div class="callout">
+        <p>If a keybinding seems wrong here, regenerate the page before assuming the docs are stale. This page is only as current as the last generation pass.</p>
+      </div>
 <div class="kbd-shell">
   <section class="section">
     <h2>Applications</h2>
@@ -258,51 +261,22 @@
         <tr><td><code>Super + Ctrl + X</code></td><td>Toggle dictation</td><td><code>bindd</code></td></tr>
         <tr><td><code>Super + Z</code></td><td>leenium-screen-magnifier toggle</td><td><code>bind</code></td></tr>
         <tr><td><code>Super + NUMPAD_PLUS</code></td><td>leenium-screen-magnifier in</td><td><code>bind</code></td></tr>
-        <tr><td><code>Super + NUMPAD_MINUS</code></td><td>leenium-screen-magnifier out</td><td><code>bind</code></td></tr>
-        <tr><td><code>Super + Ctrl + L</code></td><td>Lock system</td><td><code>bindd</code></td></tr>
-      </tbody>
-    </table>
-  </section>
-  <section class="section">
-    <h2>Legacy</h2>
-    <table class="kbd-table">
-      <thead><tr><th>Shortcut</th><th>Action</th><th>Type</th></tr></thead>
-      <tbody>
-        <tr><td><code>Super + ENTER</code></td><td>Terminal</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Shift + ENTER</code></td><td>Browser</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Shift + F</code></td><td>File manager</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Alt + Shift + F</code></td><td>File manager (cwd)</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Shift + B</code></td><td>Browser</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Shift + Alt + B</code></td><td>Browser (private)</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + Shift + N</code></td><td>Editor</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + F</code></td><td>File manager</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + B</code></td><td>Web browser</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + M</code></td><td>Music player</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + N</code></td><td>Neovim</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + T</code></td><td>Top</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + D</code></td><td>Lazy Docker</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + G</code></td><td>Messenger</td><td><code>bindd</code></td></tr>
-        <tr><td><code>Super + SLASH</code></td><td>Password manager</td><td><code>bindd</code></td></tr>
       </tbody>
     </table>
   </section>
 </div>
     </section>
   </div>
-
   <script>
-    const input = document.getElementById('filterKeybinds');
-    const rows = [...document.querySelectorAll('.kbd-table tbody tr')];
-
-    function applyFilter() {
-      const q = input.value.trim().toLowerCase();
-      for (const row of rows) {
-        const text = row.textContent.toLowerCase();
-        row.classList.toggle('hidden', q !== '' && !text.includes(q));
-      }
+    const searchInput = document.getElementById("filterKeybinds");
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        const q = searchInput.value.trim().toLowerCase();
+        document.querySelectorAll(".kbd-table tbody tr").forEach((row) => {
+          row.classList.toggle("hidden", !row.innerText.toLowerCase().includes(q));
+        });
+      });
     }
-
-    input.addEventListener('input', applyFilter);
   </script>
 </body>
 </html>

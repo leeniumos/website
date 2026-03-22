@@ -13,60 +13,84 @@
 <body>
   <div class="wrapper">
     <header class="top">
-      <h1 class="title">Hypr Config Reference</h1>
-      <p class="subtitle">How Leenium layers Hyprland defaults and user overrides.</p>
-      <nav class="nav">
-        <a href="../">Manual Home</a>
-        <a href="../../">Website Home</a>
-      </nav>
+      <div class="chrome">
+        <div class="dots" aria-hidden="true">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        </div>
+        <strong>hypr-reference</strong>
+        <span>layering guide</span>
+      </div>
+      <div class="top-body">
+        <span class="eyebrow">Hyprland</span>
+        <h1 class="title">Hypr <span class="title-accent">Config Reference</span></h1>
+        <p class="subtitle">Leenium uses a layered Hyprland setup. This page explains which files are project defaults, which files are yours to edit, and which helper commands can overwrite them.</p>
+        <nav class="nav">
+          <a href="../">Manual Home</a>
+          <a href="../../">Website Home</a>
+          <a href="../keybindings/">Keybindings</a>
+        </nav>
+      </div>
     </header>
 
     <section class="section">
-      <h2>Load Order (Important)</h2>
-      <p>Your main <code>~/.config/hypr/hyprland.conf</code> first loads defaults from <code>~/.local/share/leenium/default/hypr</code>, then loads user overrides from <code>~/.config/hypr</code>.</p>
-      <pre>Defaults: autostart, media/clipboard/tiling/utilities bindings,
+      <h2>Load Order</h2>
+      <p>Your main <code>~/.config/hypr/hyprland.conf</code> first loads Leenium defaults from <code>~/.local/share/leenium/default/hypr</code>, then loads user overrides from <code>~/.config/hypr</code>.</p>
+      <pre>Defaults: autostart, media / clipboard / tiling / utilities bindings,
 envs, looknfeel, input, windows, current theme.
 
 Overrides: monitors.conf, input.conf, bindings.conf,
 looknfeel.conf, autostart.conf.</pre>
-      <p>Practical rule: edit files in <code>~/.config/hypr</code>; keep <code>default/hypr</code> as baseline.</p>
+      <div class="callout">
+        <p>Practical rule: edit <code>~/.config/hypr</code>. Treat <code>~/.local/share/leenium/default/hypr</code> as project-owned baseline config.</p>
+      </div>
     </section>
 
     <section class="section">
-      <h2>User Config Tree (`leenium/config/hypr`)</h2>
-      <ul>
-        <li><code>hyprland.conf</code>: source order and entry point.</li>
-        <li><code>monitors.conf</code>: display layout and scaling.</li>
-        <li><code>bindings.conf</code>: personal keybind overrides.</li>
-        <li><code>input.conf</code>: keyboard, touchpad, pointer settings.</li>
-        <li><code>looknfeel.conf</code>: local aesthetic overrides.</li>
-        <li><code>autostart.conf</code>: startup programs and services.</li>
-        <li><code>hypridle.conf</code>, <code>hyprlock.conf</code>, <code>hyprsunset.conf</code>, <code>xdph.conf</code>: lock/idle/nightlight/portal behavior.</li>
-      </ul>
+      <h2>User Override Tree</h2>
+      <div class="columns-2">
+        <div class="mini-card">
+          <h3>Main overrides</h3>
+          <ul>
+            <li><code>monitors.conf</code></li>
+            <li><code>input.conf</code></li>
+            <li><code>bindings.conf</code></li>
+            <li><code>looknfeel.conf</code></li>
+            <li><code>autostart.conf</code></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h3>Related runtime files</h3>
+          <ul>
+            <li><code>hypridle.conf</code></li>
+            <li><code>hyprlock.conf</code></li>
+            <li><code>hyprsunset.conf</code></li>
+            <li><code>xdph.conf</code></li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="section">
-      <h2>Default Config Tree (`leenium/default/hypr`)</h2>
+      <h2>Leenium Default Tree</h2>
       <ul>
-        <li><code>looknfeel.conf</code>, <code>input.conf</code>, <code>windows.conf</code>, <code>envs.conf</code>: baseline session behavior.</li>
-        <li><code>autostart.conf</code>: base daemons + <code>leenium-cmd-first-run</code>.</li>
-        <li><code>bindings/</code>:</li>
-        <li><code>media.conf</code>: XF86 volume/brightness/media keys.</li>
-        <li><code>clipboard.conf</code>: universal copy/paste/cut + clipboard manager.</li>
-        <li><code>tiling-v2.conf</code>: modern window/workspace/group controls.</li>
-        <li><code>utilities.conf</code>: menus, notifications, toggles, capture, sharing.</li>
-        <li><code>apps.conf</code> + <code>apps/*.conf</code>: app-specific window rules (browser, terminals, telegram, steam, qemu, etc.).</li>
-        <li><code>plain-bindings.conf</code> and root <code>bindings.conf</code>: compatibility/deprecated binding layers.</li>
+        <li><code>looknfeel.conf</code>, <code>input.conf</code>, <code>windows.conf</code>, <code>envs.conf</code> define baseline behavior</li>
+        <li><code>autostart.conf</code> starts base services and first-run entrypoints</li>
+        <li><code>bindings/</code> holds media, clipboard, tiling, and utility bindings</li>
+        <li><code>apps.conf</code> and <code>apps/*.conf</code> hold app-specific window rules</li>
+        <li><code>plain-bindings.conf</code> exists for simpler direct binding overrides</li>
       </ul>
     </section>
 
     <section class="section">
       <h2>Useful Commands While Tweaking</h2>
       <ul>
-        <li><code>hyprctl reload</code> or <code>leenium-restart-hyprctl</code></li>
-        <li><code>leenium-menu-keybindings --print</code> to inspect live binds</li>
-        <li><code>leenium-reinstall-configs</code> to restore defaults (overwrites local config)</li>
+        <li><code>hyprctl reload</code></li>
+        <li><code>leenium-menu-keybindings --print</code></li>
+        <li><code>leenium-reinstall-configs</code></li>
       </ul>
+      <div class="callout warn">
+        <p><code>leenium-reinstall-configs</code> is not a light refresh. It is a reset-style tool and can overwrite local customizations.</p>
+      </div>
     </section>
   </div>
 </body>
